@@ -1,0 +1,7 @@
+Flask
+google-generativeai
+python-docx
+PyMuPDF
+pandas
+python-dotenv
+difflib

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Proofreading Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  
+    <script>
+    // Fungsi untuk link "Home" di Navigasi
+    function navGoToHome() {
+      document.getElementById("hero-section").classList.remove("hidden");
+      document.getElementById("features-page-container").classList.add("hidden");
+      document.getElementById("dropdown-section").classList.add("hidden");
+      document.querySelectorAll(".feature-section").forEach(sec => sec.classList.add("hidden"));
+      document.getElementById("feature-select").value = "";
+    }
+
+    // Fungsi untuk tombol "Yuk Mulai" & link "Fitur yang tersedia"
+    // REVISI: Sekarang dengan overlay 1 detik
+    function navGoToFitur() {
+      // 1. Dapatkan dan tampilkan overlay
+      const overlay = document.getElementById("redirect-overlay");
+      overlay.classList.remove("hidden");
+
+      // 2. Atur timer 1 detik (1000 ms)
+      setTimeout(() => {
+        // 3. Lakukan semua aksi halaman
+        document.getElementById("hero-section").classList.add("hidden");
+        document.getElementById("features-page-container").classList.remove("hidden");
+        document.getElementById("dropdown-section").classList.add("hidden");
+        document.querySelectorAll(".feature-section").forEach(sec => sec.classList.add("hidden"));
+        
+        // 4. Sembunyikan overlay lagi
+        overlay.classList.add("hidden");
+        
+        // 5. Scroll ke tujuan (TARGET YANG BENAR)
+        document.querySelector("#features-page-container .section-title").scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      }, 1000); // 1000 milidetik = 1 detik
+    }
+
+    // Fungsi untuk tombol "Mulai Sekarang" di 4 kartu
+    function goToFeature(featureId) {
+      document.querySelectorAll(".feature-section").forEach(sec => sec.classList.add("hidden"));
+      const dropdownSection = document.getElementById("dropdown-section");
+      const featureSection = document.getElementById(featureId);
+      
+      dropdownSection.classList.remove("hidden");
+      featureSection.classList.remove("hidden");
+      document.getElementById("feature-select").value = featureId;
+      dropdownSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Fungsi untuk dropdown itu sendiri
+    function showFeature() {
+      const selection = document.getElementById("feature-select").value;
+      document.querySelectorAll(".feature-section").forEach(sec => sec.classList.add("hidden"));
+      
+      if (selection) {
+        document.getElementById(selection).classList.remove("hidden");
+      }
+    }
+  </script>
+  </head>
+<body>
+
+  <div id="redirect-overlay" class="redirect-overlay hidden">
+    <div class="redirect-box">
+      <div class="spinner"></div>
+      <p>Redirecting...</p>
+    </div>
+  </div>
+  <div class="top-bar">
+    <p>AI dapat memberikan kesalahan, Harap periksa kembali hasil yang diberikan oleh AI</p>
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-logo">
+      <a href="#" onclick="navGoToHome(); return false;">
+        <img src="{{ url_for('static', filename='Logo_IFG-removebg-preview.png') }}" alt="Logo">
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" onclick="navGoToHome(); return false;">Home</a></li>
+      <li><a href="#" onclick="navGoToFitur(); return false;">Fitur yang Tersedia</a></li>
+    </ul>
+    <div class="nav-extra"></div>
+  </nav>
+
+  <main>
+  	<div id="global-error" class="error-box hidden"></div>
+
+    <section id="hero-section" class="hero-section">
+      <div class="hero-content">
+        <h1>Selamat Datang di Website Proofreader IFG</h1>
+        <p class="subtitle">Divisi Satuan Kerja Audit Internal</p>
+        <p>Platform ini membantu Anda dalam proofreading otomatis, dan analisis koherensi menggunakan AI berbasis Gemini.</p>
+        <button class="start-btn" onclick="navGoToFitur()">Yuk mulai Proofread</button>
+      </div>
+      <div class="hero-image">
+        <img src="{{ url_for('static', filename='Proofread GIF.gif') }}" alt="Hero Image">
+        <p class="image-caption">Source : Qais Sarhan (Dribble)</p>
+      </div>
+    </section>
+
+    <section id="features-page-container" class="hidden">
+
+      <h2 class="section-title">Fitur yang Tersedia</h2>
+      
+      <p class="grid-intro-text">
+        Kami menyediakan 4 layanan berikut, Anda dipersilakan untuk memilih fitur yang ingin Anda gunakan.
+      </p>
+
+      <section id="feature-grid" class="feature-grid">
+        
+        <div class="feature-card">
+          <h3>Proofreading Otomatis</h3>
+          <p>Perbaiki tata bahasa, ejaan, dan gaya akademik dokumen Anda secara otomatis.</p>
+          <button class="feature-btn" onclick="goToFeature('proofreading')">Mulai Sekarang</button>
+        </div>
+        
+        <div class="feature-card">
+          <h3>Perbandingan Dokumen</h3>
+          <p>Bandingkan dua versi dokumen Anda secara berdampingan untuk melihat perubahan.</p>
+          <button class="feature-btn" onclick="goToFeature('compare')">Mulai Sekarang</button>
+        </div>
+
+        <div class="feature-card">
+          <h3>Analisis Koherensi</h3>
+          <p>Periksa kesesuaian ide antar paragraf dan transisi logis dalam teks Anda.</p>
+          <button class="feature-btn" onclick="goToFeature('coherence')">Mulai Sekarang</button>
+        </div>
+
+        <div class="feature-card">
+          <h3>Restrukturisasi Teks</h3>
+          <p>AI akan membantu menyusun ulang paragraf agar lebih logis dan mudah diikuti.</p>
+          <button class="feature-btn" onclick="goToFeature('restructure')">Mulai Sekarang</button>
+        </div>
+      </section>
+
+    </section>     <section id="dropdown-section" class="dropdown-section hidden"> 
+      <h3>Pilih Fitur yang Sedang Aktif</h3>
+      <select id="feature-select" onchange="showFeature()">
+        <option value="">-- Pilih Fitur --</option>
+        <option value="proofreading">Proofreading Otomatis</option>
+        <option value="compare">Perbandingan Dokumen</option>
+        <option value="coherence">Analisis Koherensi</option>
+        <option value="restructure">Restrukturisasi Koherensi</option>
+      </select>
+    </section>
+
+    <section id="proofreading" class="feature-section hidden">
+      <h3>Proofreading Otomatis</h3>
+      <p>Unggah dokumen Anda (.docx) dan biarkan AI memperbaiki tata bahasa, ejaan, serta gaya akademik.</p>
+      <div class="upload-box">
+        <input type="file" id="proofread-file" accept=".docx, .pdf" />
+        <button id="proofread-analyze-btn" class="analyze-btn">Mulai Analisis</button>
+      </div>
+      <div id="proofread-loading" class="loading hidden">
+        <div class="spinner"></div>
+        Menganalisis dokumen dengan AI... Mohon ditunggu
+      </div>
+      <div id="proofread-results-container" class="results-container hidden">
+        <h4>Hasil Analisis</h4>
+        <div id="proofread-results-table"></div>
+        <div id="proofread-download-buttons" class="download-buttons">
+          <button id="proofread-download-revised-btn" class="download-btn">Unduh Revisi (.docx)</button>
+          <button id="proofread-download-highlighted-btn" class="download-btn">Unduh Highlight (.docx)</button>
+          <button id="proofread-download-zip-btn" class="download-btn">Unduh Semua (.zip)</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="compare" class="feature-section hidden">
+      <h3>Perbandingan Dokumen</h3>
+      <p>Bandingkan dua versi dokumen (.docx) Anda secara berdampingan untuk melihat perubahan.</p>
+      <div class="upload-box split">
+        <div>
+          <label for="compare-file1">Dokumen Asli:</label>
+          <input type="file" id="compare-file1" accept=".docx" />
+        </div>
+        <div>
+          <label for="compare-file2">Dokumen Revisi:</label>
+          <input type="file" id="compare-file2" accept=".docx" />
+        </div>
+      </div>
+      <button id="compare-analyze-btn" class="analyze-btn full-width">Mulai Perbandingan</button>
+      <div id="compare-loading" class="loading hidden">
+        <div class="spinner"></div>
+        Membandingkan dokumen...
+      </div>
+      <div id="compare-results-container" class="results-container hidden">
+        <h4>Hasil Perbandingan</h4>
+        <div id="compare-results-table"></div>
+        <div id="compare-download-buttons" class="download-buttons">
+          <button id="compare-download-btn" class="download-btn">Unduh Tabel Perbandingan (.docx)</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="coherence" class="feature-section hidden">
+      <h3>Analisis Koherensi</h3>
+      <p>AI akan memeriksa kesesuaian ide antar paragraf dan transisi logis dalam teks Anda.</p>
+      <div class="upload-box">
+        <input type="file" id="coherence-file" accept=".docx, .pdf" />
+        <button id="coherence-analyze-btn" class="analyze-btn">Mulai Analisis Koherensi</button>
+      </div>
+      <div id="coherence-loading" class="loading hidden">
+        <div class="spinner"></div>
+        Menganalisis koherensi dokumen...
+      </div>
+      <div id="coherence-results-container" class="results-container hidden">
+        <h4>Hasil Analisis Koherensi</h4>
+        <div id="coherence-results-table"></div>
+      </div>
+    </section>
+
+  	<section id="restructure" class="feature-section hidden">
+      <h3>Restrukturisasi Koherensi</h3>
+      <p>AI akan membantu menyusun ulang paragraf agar lebih logis dan mudah diikuti pembaca.</p>
+      <div class="upload-box">
+        <input type="file" id="restructure-file" accept=".docx, .pdf" />
+        <button id="restructure-analyze-btn" class="analyze-btn">Mulai Analisis Restrukturisasi</button>
+      </div>
+      <div id="restructure-loading" class="loading hidden">
+        <div class="spinner"></div>
+        Menganalisis struktur dokumen...
+      </div>
+      <div id="restructure-results-container" class="results-container hidden">
+        <h4>Saran Restrukturisasi</h4>
+        <div id="restructure-results-table"></div>
+        <div id="restructure-download-buttons" class="download-buttons">
+          <button id="restructure-download-btn" class="download-btn">Unduh Dokumen dengan Highlight (.docx)</button>
+        </div>
+      </div>
+  	</section>
+  </main>
+
+  <footer>
+    <p>© 2025 AI Proofreading Dashboard | Dibangun dengan Gemini API</p>
+  </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</body>
+</html>
